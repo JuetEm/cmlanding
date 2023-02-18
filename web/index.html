@@ -15,6 +15,15 @@
     the `--base-href` argument provided to `flutter build`.
   -->
   <base href="$FLUTTER_BASE_HREF">
+  <!-- Chrome, Firefox, Opera -->
+<meta content='#FFFFFF' name='theme-color'/>
+
+<!-- Windows Phone -->
+<meta content='#FFFFFF' name='msapplication-navbutton-color'/>
+
+<!-- iOS Safari -->
+<meta content='#FFFFFF' name='apple-mobile-web-app-status-bar-style'/>
+<meta content='yes' name='apple-mobile-web-app-capable'/>
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
@@ -23,14 +32,33 @@
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="classmatch">
-  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+  <meta name="apple-mobile-web-app-title" content="BetterCoach">
+  <link rel="apple-touch-icon" href="256.png">
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
 
-  <title>classmatch</title>
+  <title>::클래스매치:: 필라테스 강사를 위한 대강알림앱</title>
   <link rel="manifest" href="manifest.json">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="클래스매치">
+  <meta property="og:description" content="필라테스 강사를 위한 대강알림앱">
+  <meta property="og:image" content="icons/ogimage.png">
+  <meta property="og:url" content="http://classmatch.co.kr/">
+  <meta property="og:site_name" content="클래스매치 :: 필라테스 강사를 위한 대강알림앱">
+  <meta property="og:locale" content="ko_KR">
+    <!-- 다음의 태그는 필수는 아니지만, 포함하는 것을 추천함 1200 / 630권장-->
+    <meta property="og:image:width" content="467">
+    <meta property="og:image:height" content="201">
+
+
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="클래스매치">
+  <meta name="twitter:description" content="필라테스 강사를 위한 대강알림앱">
+  <meta name="twitter:image" content="http://classmatch.co.kr/">
+  <meta name="twitter:domain" content="클래스매치">
 
   <script>
     // The value below is injected by flutter build, do not touch.
@@ -40,6 +68,7 @@
   <script src="flutter.js" defer></script>
 </head>
 <body>
+
   <script>
     window.addEventListener('load', function(ev) {
       // Download main.dart.js
@@ -54,5 +83,7 @@
       });
     });
   </script>
+
+  
 </body>
 </html>
