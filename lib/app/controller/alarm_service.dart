@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class AlarmService extends ChangeNotifier {
   //final alarmCollection = FirebaseFirestore.instance.collection('live');
-  final alarmCollection = FirebaseFirestore.instance.collection('inprogress');
+  final alarmCollection = FirebaseFirestore.instance.collection('inprogress2');
   final emailCollection = FirebaseFirestore.instance.collection('email');
 
   Future<int> countMember() async {

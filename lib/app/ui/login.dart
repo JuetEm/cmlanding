@@ -14,6 +14,7 @@ import 'globalWidget.dart';
 Color focusColor = Palette.buttonOrange;
 Color normalColor = Palette.gray66;
 bool initFlag = true;
+bool finishFlag = false;
 
 /// 로그인 페이지
 class LoginPage extends StatefulWidget {
@@ -33,6 +34,8 @@ class _LoginPageState extends State<LoginPage> {
   FocusNode phoneNumberFocusNode = new FocusNode();
 
   bool _isChecked = false;
+
+  final GlobalKey directKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -75,12 +78,52 @@ class _LoginPageState extends State<LoginPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
+                      // ElevatedButton(
+                      //   child: Padding(
+                      //     padding: const EdgeInsets.all(14.0),
+                      //     child: Container(
+                      //         width: 200,
+                      //         child: Center(
+                      //           child: Text(" 무료 체험 바로가기",
+                      //               style: TextStyle(fontSize: 24)),
+                      //         )),
+                      //   ),
+                      //   style: ElevatedButton.styleFrom(
+                      //     shape: RoundedRectangleBorder(
+                      //       borderRadius: BorderRadius.circular(30),
+                      //     ),
+                      //     padding: EdgeInsets.all(0),
+                      //     elevation: 0,
+                      //     backgroundColor: Palette.buttonOrange,
+                      //   ),
+                      //   onPressed: () {
+                      //     Scrollable.ensureVisible(
+                      //       directKey.currentContext!,
+                      //       duration: Duration(seconds: 1),
+                      //     );
+                      //   },
+                      // ),
+
                       // 랜딩페이지 이미지
                       Image.asset(
-                        'assets/images/landing3.png',
+                        'assets/images/Landing_01.png',
                         width: 360,
                         // height: 4000,
                         // fit: BoxFit.cover,
+                      ),
+                      InkWell(
+                        child: Image.asset(
+                          'assets/images/Landing_03.png',
+                          width: 360,
+                          // height: 4000,
+                          // fit: BoxFit.cover,
+                        ),
+                        onTap: () {
+                          Scrollable.ensureVisible(
+                            directKey.currentContext!,
+                            duration: Duration(seconds: 1),
+                          );
+                        },
                       ),
                       SizedBox(height: 20),
                       Container(
@@ -118,7 +161,7 @@ class _LoginPageState extends State<LoginPage> {
                           StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
                             // stream: alarmService.read(user.uid),
                             stream: FirebaseFirestore.instance
-                                .collection('inprogress')
+                                .collection('inprogress2')
                                 .orderBy('startTime', descending: true)
                                 .limit(3)
                                 .snapshots(),
@@ -348,13 +391,14 @@ class _LoginPageState extends State<LoginPage> {
                         ]),
                       ),
                       Image.asset(
-                        'assets/images/landing4.png',
+                        'assets/images/Landing_04.png',
                         width: 360,
                         // height: 4000,
                         // fit: BoxFit.cover,
                       ),
 
                       Container(
+                        key: directKey,
                         width: 250,
                         child: Column(children: [
                           SizedBox(
@@ -465,55 +509,6 @@ class _LoginPageState extends State<LoginPage> {
 
                           SizedBox(height: 20),
 
-                          ElevatedButton(
-                            child: Padding(
-                              padding: const EdgeInsets.all(14.0),
-                              child: Container(
-                                  width: 200,
-                                  child: Center(
-                                    child: Text("무료 체험 신청",
-                                        style: TextStyle(fontSize: 24)),
-                                  )),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                              padding: EdgeInsets.all(0),
-                              elevation: 0,
-                              backgroundColor: Palette.buttonOrange,
-                            ),
-                            onPressed: () {
-                              // null;
-                              // 회원가입
-                              alramService.create(
-                                name: nameController.text,
-                                email: emailController.text,
-                                phoneNumber: phoneNumberController.text,
-                                isChecked: _isChecked,
-                                onSuccess: () {
-                                  nameController.clear();
-                                  emailController.clear();
-                                  phoneNumberController.clear();
-
-                                  FlutterDialog(context, "무료 체험 신청이 완료되었습니다");
-
-                                  // // 회원가입 성공
-                                  // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                  //   content: Text("무료 체험 신청이 완료되었습니다"),
-                                  // ));
-                                },
-                                onError: (err) {
-                                  FlutterDialog(context, err);
-                                  // // 에러 발생
-                                  // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                  //   content: Text(err),
-                                  // ));
-                                },
-                              );
-                            },
-                          ),
-                          SizedBox(height: 10),
                           StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
                             // stream: alarmService.read(user.uid),
                             stream: FirebaseFirestore.instance
@@ -531,10 +526,136 @@ class _LoginPageState extends State<LoginPage> {
                               } else if (!snapshot.hasData) {
                                 return Center(child: Text("-"));
                               }
-                              final count = 100 - documents.length;
-                              return Text("남은자리 : ${count.toString()}");
+                              int count = 30 - documents.length;
+                              if (count < 0) {
+                                count = 0;
+                                finishFlag = true;
+                              }
+                              return Column(
+                                children: [
+                                  Text("남은자리 : ${count.toString()}",
+                                      style: TextStyle(fontSize: 20)),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  Offstage(
+                                    offstage: !finishFlag,
+                                    child: ElevatedButton(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(14.0),
+                                        child: Container(
+                                          width: 200,
+                                          child: Center(
+                                            child: Text("대기 알림 받기",
+                                                style: TextStyle(fontSize: 24)),
+                                          ),
+                                        ),
+                                      ),
+                                      style: ElevatedButton.styleFrom(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(30),
+                                        ),
+                                        padding: EdgeInsets.all(0),
+                                        elevation: 0,
+                                        backgroundColor: Palette.buttonOrange,
+                                      ),
+                                      onPressed: () {
+                                        // null;
+                                        // 회원가입
+                                        alramService.create(
+                                          name: nameController.text,
+                                          email: emailController.text,
+                                          phoneNumber:
+                                              phoneNumberController.text,
+                                          isChecked: _isChecked,
+                                          onSuccess: () {
+                                            nameController.clear();
+                                            emailController.clear();
+                                            phoneNumberController.clear();
+
+                                            FlutterDialog(
+                                                context, "대기알림 신청 완료되었습니다");
+
+                                            // // 회원가입 성공
+                                            // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                            //   content: Text("무료 체험 신청이 완료되었습니다"),
+                                            // ));
+                                          },
+                                          onError: (err) {
+                                            FlutterDialog(context, err);
+                                            // // 에러 발생
+                                            // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                            //   content: Text(err),
+                                            // ));
+                                          },
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  Offstage(
+                                    offstage: finishFlag,
+                                    child: ElevatedButton(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(14.0),
+                                        child: Container(
+                                          width: 200,
+                                          child: Center(
+                                            child: Text("무료 체험 신청",
+                                                style: TextStyle(fontSize: 24)),
+                                          ),
+                                        ),
+                                      ),
+                                      style: ElevatedButton.styleFrom(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(30),
+                                        ),
+                                        padding: EdgeInsets.all(0),
+                                        elevation: 0,
+                                        backgroundColor: Palette.buttonOrange,
+                                      ),
+                                      onPressed: () {
+                                        // null;
+                                        // 회원가입
+                                        alramService.create(
+                                          name: nameController.text,
+                                          email: emailController.text,
+                                          phoneNumber:
+                                              phoneNumberController.text,
+                                          isChecked: _isChecked,
+                                          onSuccess: () {
+                                            nameController.clear();
+                                            emailController.clear();
+                                            phoneNumberController.clear();
+
+                                            FlutterDialog(
+                                                context, "무료 체험 신청이 완료되었습니다");
+
+                                            // // 회원가입 성공
+                                            // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                            //   content: Text("무료 체험 신청이 완료되었습니다"),
+                                            // ));
+                                          },
+                                          onError: (err) {
+                                            FlutterDialog(context, err);
+                                            // // 에러 발생
+                                            // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                            //   content: Text(err),
+                                            // ));
+                                          },
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  SizedBox(height: 10),
+                                ],
+                              );
                             },
                           ),
+
+                          SizedBox(height: 20),
+
                           SizedBox(height: 50),
                         ]),
                       )
