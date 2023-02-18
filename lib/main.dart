@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
     final user = context.read<AuthService>().currentUser();
 
     return MaterialApp(
-        title: '베러코치 대강알림',
+        title: '클래스매치 대강알림',
         theme: ThemeData(
           fontFamily: 'Pretendard',
           primarySwatch: Colors.blue,
